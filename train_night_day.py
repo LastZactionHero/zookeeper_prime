@@ -1,7 +1,4 @@
-import code
-
 import tensorflow as tf
-from tflearn.datasets import cifar10
 import csv
 import tflearn
 from tflearn.data_utils import shuffle, to_categorical
@@ -14,12 +11,14 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 
 from tflearn.layers.estimator import regression
 
-import code
 from os import listdir
 from scipy import misc
 
-# Read the images
 image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images'
+csv_filename = '/Users/zach/Dropbox/machine_learning/image_trainer/night_day.csv'
+
+
+# Read the images
 filenames = listdir(image_path)
 
 X = []
@@ -32,7 +31,6 @@ X = (numpy.array(X) / 256.0)
 # code.interact(local=locals())
 
 # Read the csv
-csv_filename = '/Users/zach/Dropbox/machine_learning/image_trainer/night_day.csv'
 f = open(csv_filename, 'rb')
 reader = csv.reader(f)
 
@@ -82,7 +80,7 @@ network = conv_2d(network, 64, 3, activation='relu')
 network = conv_2d(network, 64, 3, activation='relu')
 network = max_pool_2d(network, 2)
 
-network = fully_connected(network, 512, activation='relu')
+network = fully_connected(network, 64, activation='relu')
 
 network = dropout(network, 0.5)
 
@@ -93,5 +91,5 @@ network = regression(network, optimizer='adam',
 
 model = tflearn.DNN(network, tensorboard_verbose=0)
 model.fit(X_train, y_train, n_epoch=1, shuffle=True, validation_set=(X_test, y_test),
-          show_metric=True, batch_size=5, run_id='cifar10_cnn')
+          show_metric=True, batch_size=10, run_id='night_day_cnn')
 model.save('model_night_day.tflearn')
