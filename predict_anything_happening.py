@@ -15,8 +15,14 @@ from scipy import misc
 
 # Read the image
 filename = sys.argv[1]
-X = [misc.imread(filename)]
+X = [misc.imread(filename, mode='L')]
 X = (numpy.array(X) / 256.0)
+
+zero_image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/known_zero_64'
+zero_image = misc.imread(zero_image_path + '/' + 'zero_daytime.jpg', mode='L')
+zero_image = numpy.array(zero_image) / 256.0
+
+X = X - zero_image
 
 ### IS ANY OF THIS NECESSARY FOR LIGHT/DARK? IN GENERAL W/ STAIONARY CAMERA?
 img_prep = ImagePreprocessing()
@@ -27,38 +33,20 @@ img_aug = ImageAugmentation()
 img_aug.add_random_flip_leftright()
 
 # Specify shape of the data, image prep
-network = input_data(shape=[None, 26, 32, 3],
+network = input_data(shape=[None, 52, 64],
                      data_preprocessing=img_prep,
                      data_augmentation=img_aug)
 
-# conv_2d incoming, nb_filter, filter_size
-# incoming: Tensor. Incoming 4-D Tensor.
-# nb_filter: int. The number of convolutional filters. # WHAT IS THIS?
-# filter_size: 'intor list ofints`. Size of filters.   # WHAT IS THIS?
-network = conv_2d(network, 32, 3, activation='relu')
-
-# (incoming, kernel_size)
-# incoming: Tensor. Incoming 4-D Layer.
-# kernel_size: 'intor list ofints`. Pooling kernel size.
-network = max_pool_2d(network, 2)
-
-network = conv_2d(network, 64, 3, activation='relu')
-network = conv_2d(network, 64, 3, activation='relu')
-network = max_pool_2d(network, 2)
-
-network = fully_connected(network, 512, activation='relu')
-
-network = dropout(network, 0.5)
-
+# Since the image position remains consistent and are fairly similar, this can be spatially aware.
+# Using a fully connected network directly, no need for convolution.
+network = fully_connected(network, 1024, activation='relu')
 network = fully_connected(network, 2, activation='softmax')
+
 network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
-                     learning_rate=0.001)
+                     learning_rate=0.0003)
 
 model = tflearn.DNN(network, tensorboard_verbose=0)
-
-
-
 model.load('model_anything_happening.tflearn')
 
 print model.predict(X)
