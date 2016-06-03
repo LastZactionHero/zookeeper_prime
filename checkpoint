@@ -1,2 +1,2 @@
-model_checkpoint_path: "model_night_day.tflearn"
-all_model_checkpoint_paths: "model_night_day.tflearn"
+model_checkpoint_path: "model_specific.tflearn"
+all_model_checkpoint_paths: "model_specific.tflearn"

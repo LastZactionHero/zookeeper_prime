@@ -14,7 +14,7 @@ from tflearn.layers.estimator import regression
 from os import listdir
 from scipy import misc
 
-image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images'
+image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images_32'
 csv_filename = '/Users/zach/Dropbox/machine_learning/image_trainer/night_day.csv'
 
 
@@ -61,7 +61,7 @@ img_aug = ImageAugmentation()
 # img_aug.add_random_flip_leftright()
  
 # Specify shape of the data, image prep
-network = input_data(shape=[None, 288, 352, 3],
+network = input_data(shape=[None, 26, 32, 3],
                      data_preprocessing=img_prep,
                      data_augmentation=img_aug)
 
@@ -69,7 +69,7 @@ network = input_data(shape=[None, 288, 352, 3],
 # incoming: Tensor. Incoming 4-D Tensor.
 # nb_filter: int. The number of convolutional filters. # WHAT IS THIS?
 # filter_size: 'intor list ofints`. Size of filters.   # WHAT IS THIS?
-network = conv_2d(network, 32, 3, activation='relu')
+network = conv_2d(network, 64, 3, activation='relu')
 
 # (incoming, kernel_size)
 # incoming: Tensor. Incoming 4-D Layer.
@@ -87,9 +87,9 @@ network = dropout(network, 0.5)
 network = fully_connected(network, 2, activation='softmax')
 network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
-                     learning_rate=0.00003)
+                     learning_rate=0.0003)
 
 model = tflearn.DNN(network, tensorboard_verbose=0)
-model.fit(X_train, y_train, n_epoch=1, shuffle=True, validation_set=(X_test, y_test),
-          show_metric=True, batch_size=10, run_id='night_day_cnn')
+model.fit(X_train, y_train, n_epoch=20, shuffle=True, validation_set=(X_test, y_test),
+          show_metric=True, batch_size=100, run_id='night_day_cnn')
 model.save('model_night_day.tflearn')
