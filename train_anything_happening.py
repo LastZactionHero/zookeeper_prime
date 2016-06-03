@@ -60,6 +60,7 @@ for filename in filenames:
     image = misc.imread(image_path + '/' + filename)
     X.append(image)
 
+
 X = (numpy.array(X) / 256.0)
 
 # Split data into training and test sets
@@ -85,7 +86,7 @@ network = input_data(shape=[None, 26, 32, 3],
 # incoming: Tensor. Incoming 4-D Tensor.
 # nb_filter: int. The number of convolutional filters. # WHAT IS THIS?
 # filter_size: 'intor list ofints`. Size of filters.   # WHAT IS THIS?
-network = conv_2d(network, 128, 3, activation='relu')
+network = conv_2d(network, 32, 3, activation='relu')
 
 # (incoming, kernel_size)
 # incoming: Tensor. Incoming 4-D Layer.
@@ -109,3 +110,5 @@ model = tflearn.DNN(network, tensorboard_verbose=0)
 model.fit(X_train, y_train, n_epoch=50, shuffle=True, validation_set=(X_test, y_test),
           show_metric=True, batch_size=25, run_id='anything_happening_cnn')
 model.save('model_anything_happening.tflearn')
+
+code.interact(local=locals())

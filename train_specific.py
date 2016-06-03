@@ -34,14 +34,15 @@ for idx, row in enumerate(reader):
     rowY = [0,0,0,0]
     if(row[1] == 'Y'):
         rowY[0] = 1
-    if(row[2] == 'Y'):
+    elif(row[2] == 'Y'):
         rowY[1] = 1
-    if(row[3] == 'Y'):
+    elif(row[3] == 'Y'):
         rowY[2] = 1
-    if(row[4] == 'Y'):
+    elif(row[4] == 'Y'):
         rowY[3] = 1
     Y.append(rowY)
 
+print Y
 
 # Read the images
 X = []
@@ -74,7 +75,7 @@ network = input_data(shape=[None, 52, 64, 3],
 # incoming: Tensor. Incoming 4-D Tensor.
 # nb_filter: int. The number of convolutional filters. # WHAT IS THIS?
 # filter_size: 'intor list ofints`. Size of filters.   # WHAT IS THIS?
-network = conv_2d(network, 256, 3, activation='relu')
+network = conv_2d(network, 512, 3, activation='relu')
 
 # (incoming, kernel_size)
 # incoming: Tensor. Incoming 4-D Layer.
@@ -92,7 +93,7 @@ network = dropout(network, 0.5)
 network = fully_connected(network, 4, activation='softmax')
 network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
-                     learning_rate=0.001)
+                     learning_rate=0.0003)
 
 model = tflearn.DNN(network, tensorboard_verbose=0)
 model.fit(X_train, y_train, n_epoch=50, shuffle=True, validation_set=(X_test, y_test),
