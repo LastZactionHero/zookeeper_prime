@@ -60,24 +60,15 @@ for idx in removal_idx:
 # Read the images
 X = []
 for filename in filenames:
-    image = misc.imread(image_path + '/' + filename, mode='L')
+    image = misc.imread(image_path + '/' + filename)
     edge_image = image
     X.append(edge_image)
 
 X = (numpy.array(X) / 256.0)
 
-zero_image = misc.imread(zero_image_path + '/' + 'zero_daytime.jpg', mode='L')
+zero_image = misc.imread(zero_image_path + '/' + 'zero_daytime.jpg')
 zero_image = numpy.array(zero_image) / 256.0
-
 X = X - zero_image
-
-# 
-# fig, (ax0) = plt.subplots(ncols=1, sharex=True, sharey=True, subplot_kw={'adjustable':'box-forced'})
-# ax0.imshow(X[700], cmap=plt.cm.gray)
-# ax0.set_title('Roberts Edge Detection')
-# ax0.axis('off')
-# plt.show()
-# exit()
 
 # Split data into training and test sets
 X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.33, random_state=42)
@@ -94,18 +85,18 @@ img_aug = ImageAugmentation()
 img_aug.add_random_flip_leftright()
 
 # Specify shape of the data, image prep
-network = input_data(shape=[None, 52, 64],
+network = input_data(shape=[None, 52, 64, 3],
                      data_preprocessing=img_prep,
                      data_augmentation=img_aug)
 
 # Since the image position remains consistent and are fairly similar, this can be spatially aware.
 # Using a fully connected network directly, no need for convolution.
-network = fully_connected(network, 1024, activation='relu')
+network = fully_connected(network, 2048, activation='relu')
 network = fully_connected(network, 2, activation='softmax')
 
 network = regression(network, optimizer='adam',
                      loss='categorical_crossentropy',
-                     learning_rate=0.0003)
+                     learning_rate=0.00003)
 
 model = tflearn.DNN(network, tensorboard_verbose=0)
 model.fit(X_train, y_train, n_epoch=100, shuffle=True, validation_set=(X_test, y_test),
