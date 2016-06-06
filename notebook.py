@@ -7,3 +7,5 @@ ax0.imshow(X[700], cmap=plt.cm.gray)
 ax0.set_title('Roberts Edge Detection')
 ax0.axis('off')
 plt.show()
+
+# from skimage.filters import roberts, sobel, scharr, prewitt
