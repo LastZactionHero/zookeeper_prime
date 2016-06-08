@@ -5,8 +5,7 @@ from tflearn.layers.core import input_data, dropout, fully_connected
 from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.conv import conv_1d, max_pool_1d
 from tflearn.layers.estimator import regression
-
-
+    
 def build_model_specific():
     ### IS ANY OF THIS NECESSARY FOR LIGHT/DARK? IN GENERAL W/ STAIONARY CAMERA?
     img_prep = ImagePreprocessing()
