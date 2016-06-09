@@ -15,7 +15,7 @@ def build_model_night_day():
     # img_aug.add_random_flip_leftright()
 
     # Specify shape of the data, image prep
-    network = input_data(shape=[None, 26, 32],
+    network = input_data(shape=[None, 52, 64],
                          data_preprocessing=img_prep,
                          data_augmentation=img_aug)
 

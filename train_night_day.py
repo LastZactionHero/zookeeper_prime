@@ -7,7 +7,7 @@ from tflearn.data_utils import shuffle
 from os import listdir
 from scipy import misc
 
-image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images_32'
+image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images_64'
 csv_filename = '/Users/zach/Dropbox/machine_learning/image_trainer/night_day.csv'
 
 
