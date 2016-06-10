@@ -1,3 +1,4 @@
 *.tflearn
 *.tflearn.meta
 *.pkl
+checkpoint

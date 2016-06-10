@@ -1,3 +1,4 @@
+import constants
 import numpy
 import sys
 from scipy import misc
@@ -12,6 +13,6 @@ X = (numpy.array(X) / 256.0)
 X = remove_zero(X)
 
 model = build_model_anything_happening()
-model.load('model_anything_happening.tflearn')
+model.load(constants.TFLEARN_ANYTHING_HAPPENING_FILENAME)
 
 print model.predict(X)

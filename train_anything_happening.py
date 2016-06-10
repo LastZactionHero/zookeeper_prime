@@ -1,3 +1,4 @@
+import constants
 from zero_average import remove_zero
 import matplotlib.pyplot as plt
 from scipy import misc
@@ -9,13 +10,10 @@ from network_anything_happening import build_model_anything_happening
 from print_results import print_results
 
 
-image_path = '/Users/zach/Dropbox/machine_learning/image_trainer/training_images_64'
-csv_filename = '/Users/zach/Dropbox/machine_learning/image_trainer/anything_happening.csv'
-
 filenames = []
 
 # Read the csv
-f = open(csv_filename, 'rb')
+f = open(constants.ANYTHING_HAPPENING_CSV_FILENAME, 'rb')
 reader = csv.reader(f)
 
 Y = []
@@ -51,7 +49,7 @@ for idx in removal_idx:
 # Read the images
 X = []
 for filename in filenames:
-    image = misc.imread(image_path + '/' + filename, 'L')
+    image = misc.imread(constants.IMAGE_64_PATH + '/' + filename, 'L')
     edge_image = image
     X.append(edge_image)
 
@@ -68,6 +66,6 @@ X_train, y_train = shuffle(X_train, y_train)
 model = build_model_anything_happening()
 model.fit(X_train, y_train, n_epoch=100, shuffle=True, validation_set=(X_test, y_test),
           show_metric=True, batch_size=100, run_id='anything_happening_cnn')
-model.save('model_anything_happening.tflearn')
+model.save(constants.TFLEARN_ANYTHING_HAPPENING_FILENAME)
 
 print_results(X, Y, model)
