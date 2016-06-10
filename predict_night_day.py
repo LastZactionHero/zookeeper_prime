@@ -1,14 +1,16 @@
-from network_night_day import build_model_night_day
 import numpy
 import sys
 from scipy import misc
+import cPickle
+from sklearn import linear_model
+import numpy as np
 
 # Read the image
 filename = sys.argv[1]
-X = [misc.imread(filename, mode='L')]
-X = (numpy.array(X) / 256.0)
+image = [misc.imread(filename, mode='L')]
+brightness = np.array(image).mean()
 
-model = build_model_night_day()
-model.load('model_night_day.tflearn')
+with open('model_night_day.pkl', 'rb') as fid:
+    clf = cPickle.load(fid)
 
-print model.predict(X)
+print clf.predict(brightness)[0]
