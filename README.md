@@ -1,4 +1,4 @@
-# Zookeeper Brain
+# Zookeeper
 Pet identification with machine learning.
 
 The application uses three models to identify the animal in the scene.
